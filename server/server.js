@@ -21,18 +21,28 @@ app.post('/todos', (req, res) => {
   });
 });
 
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos) => {
+    res.send({todos})
+  }, (e) => {
+    res.status(400).send(e);
+  });
+});
+
 
 
 app.listen(3000, () => {
   console.log('Started on port 3000');
 });
 
+module.exports = {app};
+
 
 
 // var newTodo = new Todo({
 //   text: 'Cook dinner'
 // });
-//
+
 // newTodo.save().then((doc) => {
 //   console.log('Saved todo', doc);
 // }, (e) => {
@@ -42,9 +52,10 @@ app.listen(3000, () => {
 // var forget = new Todo({
 //   text: 'Edit this video'
 // });
-//
+
 // forget.save().then((doc) => {
 //   console.log('Saved todo', JSON.stringify(doc, undefined, 2));
 // }, (e) => {
 //   console.log('Unable to save todo');
 // });
+
