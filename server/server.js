@@ -5,6 +5,7 @@ var {mongoose} = require('./db/mongoose');
 const {ObjectID} = require('mongodb');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
+const fs = require('fs');
 
 var app = express();
 
@@ -55,6 +56,21 @@ app.listen(3000, () => {
 });
 
 module.exports = {app};
+
+app.delete('/todos/:id', (req, res) => {
+  var id = req.params.id;
+  if(!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  Todo.findByIdAndRemove(id).then((todo) => {
+    if (!todo) {
+      res.status(404).send();
+    } else {
+      res.send(todo);
+    }
+  }).catch((e) => res.status(400).send());
+});
 
 
 
